@@ -25,7 +25,12 @@ export class TodoService {
   
   async findAll(): Promise<Todo[]> {
     try {
-      return this.todoRepository.find();
+      return await this.todoRepository.find({
+        order: {
+          isDone: "ASC", // firstly will be -> not done task's
+          createdAt: "DESC" // firstly will be -> lastest actual todo's (by date of creation)
+      }
+      });
     } catch (e) {
       console.error("Error on finding todos, err: ", e);
       throw new InternalServerErrorException({
