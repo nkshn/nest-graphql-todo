@@ -17,6 +17,10 @@ import { TodoModule } from './todo/todo.module';
       synchronize: true,
     }),
     GraphQLModule.forRoot({
+      cors: {
+        origin: 'http://localhost:8080',
+        credentials: true
+      },
       playground: true,
       debug: true,
       autoSchemaFile: join(process.cwd(), 'src/graphql-schema.gql'),
