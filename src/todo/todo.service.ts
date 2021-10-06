@@ -27,8 +27,8 @@ export class TodoService {
     try {
       return await this.todoRepository.find({
         order: {
-          isDone: "ASC", // firstly will be -> not done task's
-          createdAt: "DESC" // firstly will be -> lastest actual todo's (by date of creation)
+          isDone: "ASC", // sorting: firstly will be -> not done task's
+          createdAt: "DESC" // sorting: secondary will be -> lastest actual todo's (by date of creation)
       }
       });
     } catch (e) {
@@ -49,12 +49,12 @@ export class TodoService {
         });
       }
 
-      const updatedUser = await this.todoRepository.save({
+      const updatedTodo = await this.todoRepository.save({
         ...founededTodo,
         ...updateTodoDto
       });
       
-      return updatedUser;
+      return updatedTodo;
     } catch (e) {
       console.error("Error on updating todo, err: ", e);
       throw new InternalServerErrorException({
@@ -67,7 +67,7 @@ export class TodoService {
     try {
       const deletedTodo = await this.todoRepository.delete(id);
 
-      if(deletedTodo.affected > 0) {
+      if(deletedTodo.affected > 0) { // checking how many items were deleted
         return true;
       } else {
         return false;
